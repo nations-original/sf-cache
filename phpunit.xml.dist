@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         stopOnFailure="false"
+>
+    <php>
+        <ini name="display_errors" value="1"/>
+        <ini name="error_reporting" value="-1"/>
+        <!-- Override any of these via env vars or Redis::configure() / Memcached::configure() in bootstrap.php -->
+        <env name="REDIS_CACHE_URL" value="redis://localhost:6379/15"/>
+        <env name="MEMCACHED_SERVER" value="localhost"/>
+        <env name="MEMCACHED_PORT" value="11211"/>
+        <env name="SERVER_PREFIX" value="test"/>
+        <env name="APP_ENV" value="test"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Cache">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <!-- Connections are integration-only; covered transitively by adapter tests -->
+            <directory suffix=".php">src/Connection</directory>
+        </exclude>
+    </coverage>
+
+</phpunit>
